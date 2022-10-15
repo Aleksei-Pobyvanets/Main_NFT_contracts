@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract NFT is ERC721Enumerable, Ownable {
-    using Strigs for uint;
+    using Strings for uint;
 
     string public baseURI;
     string public baseExtension = ".json";
@@ -81,4 +81,63 @@ contract NFT is ERC721Enumerable, Ownable {
         return tokenIds;
     }
 
+    function tokenURI(uint tokenId) public view virtual override returns(string memory){
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+        if(revealed == false){
+            return notRevealedUri;
+        }
+        string memory currentBaseURI = _baseURI();
+        return bytes(currentBaseURI).length > 0
+            ? string(abi.encodePacked(currentBaseURI, tokenId.toString(), baseExtension))
+            : "";
+    }
+
+    //only owner
+    function reveal() public onlyOwner {
+        revealed = true;
+    }
+
+    function setNftPerAddressLimit(uint _limit) public onlyOwner{
+        nftPerAddressLimit = _limit;
+    }
+
+    function setCost(uint _newCost) public onlyOwner {
+        cost = _newCost;
+    }
+
+    function setmaxMintAmount(uint _newmaxMintAmount) public onlyOwner{
+        maxMintAmount = _newmaxMintAmount;
+    }
+
+    function setBaseURI(string memory _newBaseURI) public onlyOwner{
+        baseURI = _newBaseURI;
+    }
+
+    function setBaseExtension(string memory _newBaseExtension) public onlyOwner{
+        baseExtension = _newBaseExtension;
+    }
+
+    function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner{
+        notRevealedUri = _notRevealedURI;
+    }
+
+    function pause(bool _state) public onlyOwner{
+        paused = _state;
+    }
+
+    function setOnlyWhitelisted(bool _state) public onlyOwner{
+        onlyWhitelisted = _state;
+    }
+
+    function whitelistUsers(address[] calldata _users) public onlyOwner {
+        delete whitelistedAddresses;
+        whitelistedAddresses = _users;
+    }
+
+    // withdraw
+    function withdraw() public payable onlyOwner {
+        (bool os, ) = payable(owner()).call{value: address(this).balance}("");
+    require(os);
+    }
 }
+
