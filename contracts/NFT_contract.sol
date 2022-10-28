@@ -25,13 +25,13 @@ contract NFT is ERC721Enumerable, Ownable {
 
 
     constructor(
-        string memory _name,
-        string memory _symbol,
-        string memory _initBaseURI,
-        string memory _initNotRevealedUri
-    ) ERC721(_name, _symbol){
-        setBaseURI(_initBaseURI);
-        setNotRevealedURI(_initNotRevealedUri);
+        string memory name,
+        string memory symbol,
+        string memory initBaseURI,
+        string memory initNotRevealedUri
+    ) ERC721(name, symbol){
+        setBaseURI(initBaseURI);
+        setNotRevealedURI(initNotRevealedUri);
     }
 
     // internal
@@ -84,13 +84,7 @@ contract NFT is ERC721Enumerable, Ownable {
     return tokenIds;
   }
 
-  function tokenURI(uint256 tokenId)
-    public
-    view
-    virtual
-    override
-    returns (string memory)
-  {
+  function tokenURI(uint256 tokenId) public view virtual override returns (string memory){
     require(
       _exists(tokenId),
       "ERC721Metadata: URI query for nonexistent token"
