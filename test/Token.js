@@ -1,6 +1,8 @@
 const { expect } = require("chai");
 // const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { ethers } = require("hardhat");
+const { waffle } = require("hardhat");
+const { deployContract } = waffle;
 
 // describe("NFT contract", function(){
 
@@ -9,7 +11,10 @@ const { ethers } = require("hardhat");
 //         const myContractDeployed = await myContract.deploy("MyContractName", "TNT", "https://fdf",  "https://fdf");
 //         await myContractDeployed.deployed();
 
-//         expect(await myContract.name().to.equal("MyContractName"))
+//         // expect(await myContract.name()).to.equal("MyContractName")
+//     })
+//     it("should be deployed with right name", async function(){
+//         expect(await myContractDeployed.name()).to.equal("MyContractName");
 //     })
 // })
 
@@ -23,12 +28,20 @@ describe("NFT contract", function(){
         const NFT = await ethers.getContractFactory("NFT", acc1);
         nft = await NFT.deploy("MyContractName", "TNT", "https://fdf123",  "https://fdf456");
         await nft.deployed();
-        console.log(nft.name);
+        console.log(nft.reveal(), "console log");
+        console.log(nft.address, acc1.address);
     })
 
-    it("should be deployed", async function(){
-        expect(await nft.name().to.equal("TNT"));
+    it("should be deployed with right name", async function(){
+        expect(await nft.name()).to.equal("MyContractName");
     })
+    it("should be deployed with right symbol", async function(){
+        expect(await nft.symbol()).to.equal("TNT");
+    })
+    it("should return false", async function(){
+        expect(await nft.reveal().to.equal(true));
+    })
+    
 })
 
 
