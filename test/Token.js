@@ -31,19 +31,24 @@ describe("NFT contract", function(){
     it("should be deployed with right name", async function(){
         expect(await nft.name()).to.equal("MyContractName");
     })
+
     it("should be deployed with right symbol", async function(){
         expect(await nft.symbol()).to.equal("TNT");
     })
+
     it("setmaxMintAmount", async function(){
         await nft.setmaxMintAmount(2);
         expect(await nft.maxMintAmount()).to.equal(2);
     })
+
     it("paused false", async function(){
         expect(await nft.paused()).to.equal(false);
     })
+
     it("revealed false", async function(){
         expect(await nft.revealed()).to.equal(false);
     })
+    
     it("onlyWhitelisted false", async function(){
         expect(await nft.onlyWhitelisted()).to.equal(true);
     })
