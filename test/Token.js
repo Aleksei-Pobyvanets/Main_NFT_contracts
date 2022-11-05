@@ -45,18 +45,16 @@ describe("NFT contract", function(){
 
     describe("Mint", function(){
         it("owner mint with add to addressMintedBalance", async function(){
-            let addrOwner = acc1.address
-            await nft.mint(1);
-            expect(await nft.addressMintedBalance(addrOwner)).to.equal(1);
+            let numb = 1;
+            await nft.mint(numb);
+            expect(await nft.addressMintedBalance(acc1.address)).to.equal(numb);
         })
         it("not an owner and without wl try to mint", async function(){
-            let addrNotAnOwner = acc2.address;
-            // await nft.onlyWhitelisted(true);
-            let tx = nft.onlyWhitelisted()
-            await console.log(tx)
+            let numb = 1;
+            await nft.onlyWhitelisted(false);
             // await nft.isWhitelisted(true);
-            // await nft.connect(acc2).mint(1);
-            // expect(await nft.connect(acc2).addressMintedBalance(addrNotAnOwner)).to.be.revertedWith("not an owner"); //be.revertedWith("not an owner");
+            await nft.connect(acc2).mint(numb);
+            expect(await nft.addressMintedBalance(acc2.address)).to.equal(1); //be.revertedWith("not an owner");
         })
     })
     
