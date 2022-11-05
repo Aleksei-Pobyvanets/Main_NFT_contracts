@@ -2,19 +2,7 @@ const { expect } = require("chai");
 // const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 const { ethers } = require("hardhat");
 const { waffle } = require("hardhat");
-// const { deployContract } = waffle;
 
-// describe("NFT contract", function(){
-
-//     it("shold return correct name", async function(){
-//         const myContract = await hre.ethers.getContractFactory("NFT");
-//         const myContractDeployed = await myContract.deploy("MyContractName", "TNT", "https://fdf",  "https://fdf");
-//         await myContractDeployed.deployed();
-//     })
-//     it("should be deployed with right name", async function(){
-//         expect(await myContractDeployed.name()).to.equal("MyContractName");
-//     })
-// })
 
 describe("NFT contract", function(){
     let acc1
@@ -48,7 +36,7 @@ describe("NFT contract", function(){
     it("revealed false", async function(){
         expect(await nft.revealed()).to.equal(false);
     })
-    
+
     it("onlyWhitelisted false", async function(){
         expect(await nft.onlyWhitelisted()).to.equal(true);
     })
@@ -64,9 +52,11 @@ describe("NFT contract", function(){
         it("not an owner and without wl try to mint", async function(){
             let addrNotAnOwner = acc2.address;
             // await nft.onlyWhitelisted(true);
+            let tx = nft.onlyWhitelisted()
+            await console.log(tx)
             // await nft.isWhitelisted(true);
             // await nft.connect(acc2).mint(1);
-            expect(await nft.connect(acc2).addressMintedBalance(addrNotAnOwner)).to.be.revertedWith("not an owner"); //be.revertedWith("not an owner");
+            // expect(await nft.connect(acc2).addressMintedBalance(addrNotAnOwner)).to.be.revertedWith("not an owner"); //be.revertedWith("not an owner");
         })
     })
     
